@@ -1,24 +1,32 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect } from "react";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import Login from "./paths/Login";
+import Public from "./paths/Public";
+import { IP } from "./index.js";
 
 function App() {
+  const _fetchUsers = async () => {
+    const res = await fetch(IP + "/users");
+    const json = await res.json();
+    console.log(json);
+  };
+
+  useEffect(() => {
+    _fetchUsers();
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className=" h-screen w-screen bg-gray-700 flex justify-center items-center text-white font-bold text-2xl">
+      <Router>
+        <Switch>
+          <Route path="/login">
+            <Login />
+          </Route>
+          <Route exact path="/">
+            <Public />
+          </Route>
+        </Switch>
+      </Router>
     </div>
   );
 }
